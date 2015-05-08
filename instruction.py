@@ -47,7 +47,7 @@ i_type_ins = [
         0x2b: "SW", 	
         0x29: "SH", 	
         0x28: "SB", 	
-        "format": "%s\t$d, %d($%d)",
+        "format": "%s\t$%d, %d($%d)",
         "oprand": ["rt", "imm", "rs"],
     },
     {
