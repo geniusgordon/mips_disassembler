@@ -95,7 +95,7 @@ class Instruction():
         self.ins["shamt"] = extract(self.ins_hex, 10, 6)
         self.ins["funct"] = extract(self.ins_hex, 5, 0)
         self.ins["imm"] = sign_extension(extract(self.ins_hex, 15, 0), 16)
-        self.ins["imm"] = extract(self.ins_hex, 15, 0)
+        self.ins["immu"] = extract(self.ins_hex, 15, 0)
         self.ins["addr"] = extract(self.ins_hex, 25, 0)
 
         if self.ins["op"] == 0:
