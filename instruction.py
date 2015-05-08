@@ -6,7 +6,7 @@ r_type_ins = [
         0x25: "OR",  
         0x26: "XOR", 
         0x27: "NOR", 
-        0x28: "NADD",
+        0x28: "NAND",
         0x2A: "SLT", 
         "format": "%s\t$%d, $%d, $%d",
         "oprand": ["rd", "rs", "rt"],
@@ -126,6 +126,7 @@ class Instruction():
                 self.ins_oprand = []
 
         if self.name == "":
+            print self.ins
             raise Exception("Unknown Instruction 0x%08x\n" % self.ins_hex)
 
     def ins_str(self):
