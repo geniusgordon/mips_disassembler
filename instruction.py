@@ -51,22 +51,22 @@ i_type_ins = [
         "oprand": ["rt", "imm", "rs"],
     },
     {
-        0x04: "BEQ", 	
-        0x05: "BNE", 	
-        "format": "%s\t$%d, $%d, %d",
-        "oprand": ["rs", "rt", "imm"],
-    },
-    {
         0x0f: "LUI", 	
         "format": "%s\t$%d, %d",
         "oprand": ["rt", "immu"],
     }
 ]
-j_type_ins = {
+branch = {
+    0x04: "BEQ", 	
+    0x05: "BNE", 	
+    "format": "%s\t$%d, $%d, 0x%08x",
+    "oprand": ["rs", "rt", "imm"],
+}
+jump = {
     0x02: "J",
     0x03: "JAL",
-    "format": "%s\t%d",
-    "oprand": ["rt", "addr"],
+    "format": "%s\t0x%08x",
+    "oprand": ["addr"],
 }
 
 def extract(value, left, right):
@@ -83,6 +83,8 @@ class Instruction():
         self.ins = {}
         self.ins_hex = ins_hex
         self.name = ""
+        self.is_branch = False
+        self.is_jump = False
         self.decode()
 
     def decode(self):
@@ -108,10 +110,16 @@ class Instruction():
                     self.name = _i[self.ins["op"]]
                     self.ins_format = _i["format"]
                     self.ins_oprand = _i["oprand"]
-            if self.ins["op"] in j_type_ins:
-                self.name = j_type_ins[self.ins["op"]]
-                self.ins_format = j_type_ins["format"]
-                self.ins_oprand = j_type_ins["oprand"]
+            if self.ins["op"] in jump:
+                self.name = jump[self.ins["op"]]
+                self.ins_format = jump["format"]
+                self.ins_oprand = jump["oprand"]
+                self.is_jump = True
+            if self.ins["op"] in branch:
+                self.name = branch[self.ins["op"]]
+                self.ins_format = branch["format"]
+                self.ins_oprand = branch["oprand"]
+                self.is_branch = True
             if self.ins["op"] == 0x3f:
                 self.name = "HALT"
                 self.ins_format = "%s"

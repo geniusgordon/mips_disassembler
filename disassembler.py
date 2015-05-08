@@ -23,8 +23,14 @@ class Disassembler():
 
     def disassemble(self):
         pc = self.pc
-        for _ins in self.ins:
-            print "0x%08x:\t%s" % (pc, Instruction(_ins).ins_str())
+        for word in self.ins:
+            _ins = Instruction(word)
+            if _ins.is_branch:
+                _ins.ins["imm"] = pc+4 + _ins.ins["imm"]*4
+            elif _ins.is_jump:
+                addr = _ins.ins["addr"]
+                _ins.ins["addr"] = ((pc+4)&0xf0000000) | (addr << 2)
+            print "0x%08x:\t%s" % (pc, _ins.ins_str())
             pc += 4
 
 
